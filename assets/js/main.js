@@ -44,9 +44,29 @@ const showValidate = input => {
   $(alert).addClass('alert-validate')
 }
 
+// ====== chat ======
+$('#send').click(() => {
+  const user = {
+    name: $('#username').val(),
+    msg: $('#text_box').val()
+  }
 
+  socket.emit('newMessage', user)
+  $('#text_box').val('');
+})
 
+socket.on('newMsg', user => {
+  const element = `
+  <li class="d-flex justify-content-between mb-1">
+    <div class="chat-body white pl-3 pr-3 pb-2 z-depth-1">
+      <strong class="primary-front">${user.name}</strong>
+    </div>
+    <p class="mb-0">${user.msg}</p>
+    </li>
+  `
 
+  $('.chat').append(element);
+})
 
 
 

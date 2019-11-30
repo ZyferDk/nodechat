@@ -30,6 +30,23 @@ io.on('connection', socket => {
 
     socket.emit('loginResponse', true)
   })
+
+  // chat message
+  socket.on('newMessage', user => {
+    io.emit('newMsg', user)
+  })
+
+  socket.on('disconnect', () => {
+    // menghapus data user logout
+    const index = usernames.indexOf(users[socket.id])
+    if (users[socket.id]) {
+      usernames.splice(index, 1)
+    }
+
+    delete users[socket.id]
+
+    io.emit('onlineUsers', usernames)
+  })
 });
 
 http.listen(8000, () => {
